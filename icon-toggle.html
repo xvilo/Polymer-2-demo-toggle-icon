@@ -9,23 +9,50 @@
       /* shadow DOM styles go here */
       :host {
         display: inline-block;
+        --icon-toggle-color: lightgrey;
+        --icon-toggle-outline-color: black;
+        --icon-toggle-pressed-color: red;
+      }
+      iron-icon {
+        fill: var(--icon-toggle-color, rgba(0,0,0,0));
+        stroke: var(--icon-toggle-outline-color, currentcolor);
+      }
+      :host([pressed]) iron-icon {
+        fill: var(--icon-toggle-pressed-color, currentcolor);
       }
     </style>
 
-    <!-- shadow DOM goes here -->
-    <span>Not much here yet.</span>
+    <iron-icon on-click="toggle" icon="[[toggleIcon]]">
+    </iron-icon>
   </template>
 
   <script>
-    class IconToggle extends Polymer.Element {
-      static get is() {
-        return 'icon-toggle';
+      class IconToggle extends Polymer.Element {
+          static get is() {
+              return 'icon-toggle';
+          }
+          static get properties() {
+              return {
+                  pressed: {
+                      type: Boolean,
+                      notify: true,
+                      reflectToAttribute: true,
+                      value: false
+                  },
+                  toggleIcon: {
+                      type: String
+                  }
+              }
+          }
+          constructor() {
+              super();
+          }
+          toggle() {
+              this.pressed = !this.pressed;
+          }
       }
-      constructor() {
-        super();
-      }
-    }
-    customElements.define(IconToggle.is, IconToggle);
+
+      customElements.define(IconToggle.is, IconToggle);
   </script>
 
 </dom-module>
